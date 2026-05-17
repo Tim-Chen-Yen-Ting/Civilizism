@@ -18,7 +18,7 @@
 
 ## Information Flow
 
-![Civilizism Information Flow](https://github.com/timchensuper999/Civilizism_Private/blob/main/images/Civilizism_Info_Flow.png)
+![Civilizism Information Flow](https://github.com/Tim-Chen-Yen-Ting/Civilizism/blob/main/architecture/Civilizism_Info_Flow.png)
 
 Memory is the hub of the simulation — not a step in a pipeline. Everything writes into it; everything reads from it. LLMs appear at exactly two points as black boxes: **action proposal generation** and **planning**. Everything else is deterministic.
 
@@ -40,9 +40,14 @@ Civilizism/
 │   ├── System/              # Global Clock and Activity Logs
 │   └── LLM Hub/             # Backend Wrappers and Structured Parsing
 └── Tool/                    # Research Utility Engines
-    ├── STEME/               # Semantic Transformation Engine → github.com/timchensuper999/STEME
-    └── BLOC/                # Belief Clustering Engine      → github.com/timchensuper999/BLOC
+    ├── STEME/               # Semantic Transformation Engine → github.com/Tim-Chen-Yen-Ting/STEME
+    └── BLOC/                # Belief Clustering Engine      → github.com/Tim-Chen-Yen-Ting/BLOC
 ```
+
+> ⚠️ **Note:** Core simulation logic lives in a private development repo.
+> This public repo contains architecture documentation, research engines
+> (STEME, BLOC), benchmarks, and sample outputs. Full codebase available
+> on request — timchen56789@gmail.com
 
 ---
 
@@ -65,11 +70,11 @@ Perception is a resource-constrained process governed by emotional state. DASP m
 - **Alignment** — semantic resonance (valence-independent) with the agent's core beliefs
 - **Biological Override** — emergency events that force attention regardless of alignment
 
-### 🧩 [BLOC](https://github.com/timchensuper999/BLOC) — Incremental Belief Clustering
+### 🧩 [BLOC](https://github.com/Tim-Chen-Yen-Ting/BLOC) — Incremental Belief Clustering
 
 Beliefs are not discrete labels — they are evolving centroids in vector space. BLOC groups raw memory embeddings into clusters that drift as new experiences arrive, reflecting how the meaning of a belief changes over time. Opposing centroids are detected automatically and trigger internal conflict memories. Crucially, these centroids are reversible: `inverse_embed()` in `stemeKit.py` maps any centroid back into semantically significant natural language statements, making ideological drift human-readable.
 
-### 🧠 [STEME](https://github.com/timchensuper999/STEME) — Semantic Transformation & Evaluation Mapping Engine
+### 🧠 [STEME](https://github.com/Tim-Chen-Yen-Ting/STEME) — Semantic Transformation & Evaluation Mapping Engine
 
 The semantic backbone of the entire framework. Beyond basic similarity scoring, STEME enables **Abstract Semantic Extraction** via `STEME_trait()` — anchoring abstract concepts (like *sincerity* or *power dominance*) using a structured dictionary of definitions and polar behavioral examples to compute accurate semantic coordinates. This is the fundamental translation layer between qualitative semantics and quantitative vectors, and back again.
 
@@ -123,21 +128,6 @@ Agent character is defined at two levels, both grounded in academic psychology l
 
 ---
 
-## Setup
-
-```bash
-pip install sentence-transformers litellm instructor pydantic numpy scikit-learn
-```
-
-```python
-from sysMod.stemeKit import setModel
-
-# Initialize the semantic backbone (called once at startup)
-setModel("BAAI/bge-small-en")
-```
-
----
-
 ## Roadmap
 
 Near-term:
@@ -151,9 +141,11 @@ Near-term:
 
 ## About
 
-Developed solo by **Tim Chen**, an undergraduate at UCLA.
+Developed solo by **Tim Chen** — Statistics & Data Science, UCLA '27.  
 
-[LinkedIn](https://www.linkedin.com/in/yen-ting-tim-chen-303276329?utm_source=share&utm_campaign=share_via&utm_content=profile&utm_medium=ios_app) | [GitHub](https://github.com/timchensuper999) 
+Building at the intersection of cognitive science, systems architecture, and AI.
+
+[LinkedIn](https://www.linkedin.com/in/yen-ting-tim-chen-303276329?utm_source=share&utm_campaign=share_via&utm_content=profile&utm_medium=ios_app) | [GitHub](https://github.com/Tim-Chen-Yen-Ting) 
 
 ---
 
