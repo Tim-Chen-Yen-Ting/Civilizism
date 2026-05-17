@@ -73,8 +73,8 @@ Streamlit UI lets you drop in, pick an agent, and spy on their thoughts guilt-fr
 
 A Streamlit-based UI was developed for Phase 1 to visualize agent internal states; captured results from Trial #1 are archived below
 
-![Phase 1 Sample Image(1/3)](https://github.com/timchensuper999/Civilizism/blob/main/devlog/phase1/phase1%20pic/Phase%201%20Sample%20(1-3).png)
-![Phase 1 Sample Image(2/3)](https://github.com/timchensuper999/Civilizism/blob/main/devlog/phase1/phase1%20pic/Phase%201%20Sample%20(2-3).png)
-![Phase 1 Sample Image(3/3)](https://github.com/timchensuper999/Civilizism/blob/main/devlog/phase1/phase1%20pic/Phase%201%20Sample%20(3-3).png)
+![Phase 1 Sample Image(1/3)](https://github.com/tim-chen-yen-ting/Civilizism/blob/main/devlog/phase1/phase1_pic/Phase_1_Sample(1-3).png)
+![Phase 1 Sample Image(2/3)](https://github.com/tim-chen-yen-ting/Civilizism/blob/main/devlog/phase1/phase1_pic/Phase_1_Sample(2-3).png)
+![Phase 1 Sample Image(3/3)](https://github.com/tim-chen-yen-ting/Civilizism/blob/main/devlog/phase1/phase1_pic/Phase_1_Sample(3-3).png)
 
 > *“They live. They walk. They reflect. And they’re weirdly obsessed with snacking.”*
