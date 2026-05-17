@@ -2,7 +2,10 @@
 
 **Civilizism** is a multi-agent simulation framework for studying the emergence of social dynamics, belief systems, and personality evolution at scale. At the microscopic level, each agent perceives their environment, forms memories, reflects on experience, plans their days, and slowly becomes who their experiences have made them. At the macroscopic level, agents interact, share and conflict over beliefs, and drive each other's personality drift — the goal being to simulate how civilizations, social norms, and collective identity emerge from the bottom up.
 
-> *"Can we simulate a society not just by what people do, but by how they think?"*
+> Note: This is the public-facing research journal for Civilizism. 
+> Architecture, philosophy, devlogs, and sample outputs live here.
+> Core simulation code is in a private development repo — 
+> available on request at timchen56789@gmail.com
 
 ---
 
