@@ -113,7 +113,7 @@ Agent character is defined at two levels, both grounded in academic psychology l
 
 ### 📐 Emotion & Belief as Continuous Fields
 
-**Emotion** is not a discrete label. It is maintained as a continuous vector in embedding space, nudged by every memory proportional to emotional intensity and `emotional_openness`. The current emotion state is resolved on demand by nearest-neighbor lookup against 96 fine-grained emotion labels across 9 families (joy, sadness, anger, fear, disgust, surprise, anticipation, trust, compound).
+**Emotion** is not a discrete label. It is maintained as a continuous vector in embedding space, nudged by every memory proportional to emotional intensity and `emotional_openness`. The current emotion state is resolved on demand by nearest-neighbor lookup against 96 fine-grained emotion labels across 9 families (joy, sadness, anger, fear, disgust, surprise, anticipation, trust, compound). These continuous arrays track shifting multi-categorical distributions across Plutchik clusters, fully exposed in telemetry and visualized via real-time multi-axis SVG radar charts. // [edited here]
 
 **Belief** follows the same principle. Each memory's content is projected into embedding space and incrementally clustered via BLOC. The resulting centroid captures not just a label but what a belief *means* to this specific agent given their accumulated experience — and how it drifts over time.
 
@@ -127,7 +127,73 @@ Agent character is defined at two levels, both grounded in academic psychology l
 
 - **Built entirely on first-principles implementations** — the cognitive architecture is novel enough that existing high-level frameworks offered no meaningful abstraction. The entire codebase relies only on: `numpy`, `math`, `uuid`, `typing`, `pydantic`, `instructor`, `litellm`, `json`, `sentence_transformers`, `sklearn.metrics.pairwise`, and `itertools`.
 
+- **Comprehensive Telemetry & Visualization** — Historical trace execution logs natively dump environment logs, chronological memory hierarchies (`embedding_tier`), and directional relational topologies (Graphviz/DOT networks mapping dynamic trust and edge-specific dominant emotions) directly into a lightweight streamable pipeline. // [edited here]
+
 > *"AI is a powerful wildhorse, but it's only a good ride if you put a mathematical reign on it."*
+
+---
+
+## 📊 Running the Demo Viewer
+
+To visualize the microscopic states and emergent macroscopic properties of a simulation run, we provide an interactive Streamlit dashboard. 
+
+### Prerequisites
+
+```bash
+pip install streamlit pandas
+```
+
+**Usage**
+
+1. Place a populated simulation trace dataset inside the demo/ folder as simulation_output.json.
+
+2. Launch the viewer:
+
+```bash
+cd demo
+streamlit run streamlit_app.py
+```
+
+### 🗄️ Telemetry JSON Schema (`simulation_output.json`)
+Large-scale historical execution logs are serialized into an analytical JSON array mapping environment records, dynamic agent profiles, chronological memory banks, and relational states:
+
+```json
+{
+  "total_ticks": 189,
+  "activity_log": [
+    { "timestep": 45, "by_who": "Ray", "content": "...", "type": "speech", "target": "environment", "region": "bedroom 3" }
+  ],
+  "room_logs": {
+    "kitchen": [ { "tick": 46, "event": "..." } ]
+  },
+  "agents": {
+    "Ray": {
+      "final_memory_log": [
+        { "timestep": 188, "content": "...", "importance": 8.32, "type": "observation", "emotion": "gratitude", "belief": "responsibility", "embedding_tier": 1, "recency_score": 1 }
+      ],
+      "snapshot_log": [
+        {
+          "tick": 0,
+          "emotion": { "emotion": "gratitude", "intensity": 10.0 },
+          "emotion_distribution": { "joy": 0.4, "trust": 0.3, "gratitude": 0.3 },
+          "situation": ["Observing the environment"],
+          "agent_info": {
+            "summary": "An agent profile summary...",
+            "core_memories": [],
+            "top_goals": [],
+            "top_beliefs": [ { "name": "responsibility", "net_importance": 650.0 } ],
+            "phenotypes": { "discipline": 0.8 },
+            "personality_coefficients": { "openness": 0.85 },
+            "social_circle": {
+              "Maya": { "trust_score": 0.5, "dominant_emotion": { "joy": 1.0 }, "recent_activities": [] }
+            }
+          }
+        }
+      ]
+    }
+  }
+}
+```
 
 ---
 
