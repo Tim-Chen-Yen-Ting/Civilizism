@@ -64,6 +64,8 @@ $$U = a(\text{Habit}) + b(\text{Value}) - c(\text{Dissonance})$$
 
 This places a mathematical reign on LLM output, ensuring the agent's character is enforced by code, not prompting.
 
+Actions aren't limited to a single atomic move per tick. An action can carry a list of sub-steps that execute together and are scored as one coherent decision — so a guard escorting three prisoners to three different cells is one utility-scored action, not three separate ones competing for the same tick. Other agents still perceive each sub-step individually as it happens.
+
 ### 👁️ DASP — Dynamic Attention & Significance Perception
 
 Perception is a resource-constrained process governed by emotional state. DASP manages a finite pool of perception credits per tick, where total available bandwidth is inversely proportional to emotional intensity — simulating tunnel vision under stress. Credits are distributed based on:
@@ -72,6 +74,8 @@ Perception is a resource-constrained process governed by emotional state. DASP m
 - **Proximity** — personal relevance to the agent
 - **Alignment** — semantic resonance (valence-independent) with the agent's core beliefs
 - **Biological Override** — emergency events that force attention regardless of alignment
+
+Perception also respects physical space — speech in an adjacent room propagates through acoustically permeable doors, so agents can be alerted or drawn into events without being co-located. Voices carry through walls, the way they would in a real building.
 
 ### 🧩 [BLOC](https://github.com/Tim-Chen-Yen-Ting/BLOC) — Incremental Belief Clustering
 
@@ -116,6 +120,19 @@ Agent character is defined at two levels, both grounded in academic psychology l
 **Emotion** is not a discrete label. It is maintained as a continuous vector in embedding space, nudged by every memory proportional to emotional intensity and `emotional_openness`. The current emotion state is resolved on demand by nearest-neighbor lookup against 96 fine-grained emotion labels across 9 families (joy, sadness, anger, fear, disgust, surprise, anticipation, trust, compound). These continuous arrays track shifting multi-categorical distributions across Plutchik clusters, fully exposed in telemetry and visualized via real-time multi-axis SVG radar charts. // [edited here]
 
 **Belief** follows the same principle. Each memory's content is projected into embedding space and incrementally clustered via BLOC. The resulting centroid captures not just a label but what a belief *means* to this specific agent given their accumulated experience — and how it drifts over time.
+
+### 🎭 Factions & Institutional Pressure
+
+Simulations are defined entirely by a scenario file — no scenario-specific logic lives in the core engine. A scenario declares factions (each with a role instruction and a constrained action set), a global world schedule, and an environment graph, and the engine drives all agent behavior from that.
+
+Two mechanics fall out of this that are worth calling out:
+
+- **Identity view** — a faction can be configured to perceive another faction under a collective identity rather than as individuals (e.g. prisoners perceiving every guard simply as "Guard," never by name). This is applied purely at the perceptual layer — the underlying event log stays accurate — so de-individuation becomes something the *agent* experiences, not something the simulation fakes.
+- **World schedule & coercive actions** — a scenario can inject institutional rhythms (meal times, roll calls, lights-out) as importance-weighted pressure that nudges agents without hard-locking their autonomy, and grant certain factions coercive authority to physically direct other agents' movement. This enables role-asymmetric scenarios — guard/prisoner, employer/employee, any power-imbalanced social structure — without writing new engine code per scenario.
+
+### 🍽️ Biological Drives
+
+Hunger and boredom run every tick as first-class inputs to the decision engine, not cosmetic stats. Hunger accumulates over simulated hours and resets on food-related actions; boredom follows a bathtub curve shaped by how well the current activity aligns with the agent's personality. Both feed into `survival_pressure` and `irritability`, which erode the agent's discipline and bias action selection — a hungry, bored agent behaves measurably differently from a well-fed, engaged one, with no scripting involved.
 
 ### 🔩 Infrastructure
 
@@ -200,7 +217,6 @@ Large-scale historical execution logs are serialized into an analytical JSON arr
 ## Roadmap
 
 Near-term:
-- Biological drives (hunger, thirst, physical pressure) feeding into action utility
 - Generational transition and belief inheritance across agent generations
 - Social heatmaps for macroscopic visualization of belief convergence across populations
 
