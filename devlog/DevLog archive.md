@@ -1,4 +1,4 @@
-# Historical Milestone Archive (Phase 0 & 1)
+# Historical Milestone Archive (Phase 0–2)
 
 This archive contains the completion logs and terminal captures from the early proof-of-concept stages of Civilizism.
 
@@ -15,4 +15,12 @@ Focus: 2-agent sustained dialogue and context-aware interaction.
 - Observed emergent behaviors like "chair hoarding" and "loop-snacking."
 - Integrated the first Streamlit-based simulation viewer for agent state inspection.
 
-Current development has moved into Phase 2+ (Version 3.0), focusing on macroscopic belief migration and 20+ agent social dynamics.
+## 🏛️ Phase 2: Where SHAPE and DASP Actually Came From
+
+- Focus: the ~year between Phase 1 and now, mostly undocumented as it happened.
+- SHAPE and DASP built — personality-driven utility scoring and deterministic, offline attention scoring, replacing raw LLM calls for both.
+- Personality grew from 8 hand-picked coefficients to the 43-trait `psyc_profile` (19 Schwartz + 24 HEXACO).
+- Engine moved from hardcoded scenario content to a scenario-JSON-driven architecture — the precondition for every replication scenario since.
+- STEME/BLOC began their move from cosine similarity to NLI.
+
+Current development has moved into Phase 3, focusing on grounded biological/psychological mechanics (sleep, threat response, object interaction, relationship modeling) and a real frontend for watching runs.
