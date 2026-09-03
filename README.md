@@ -1,6 +1,10 @@
 # Civilizism
 
-**Civilizism** is a multi-agent simulation framework for studying the emergence of social dynamics, belief systems, and personality evolution at scale. At the microscopic level, each agent perceives their environment, forms memories, reflects on experience, plans their days, and slowly becomes who their experiences have made them. At the macroscopic level, agents interact, share and conflict over beliefs, and drive each other's personality drift — the goal being to simulate how civilizations, social norms, and collective identity emerge from the bottom up.
+**Civilizism** is a multi-agent simulation framework studying how social dynamics, belief systems, and personality emerge from individual-level cognitive mechanics — no scripted social rules, no hardcoded outcomes. Each agent perceives, remembers, reflects, and plans; the population's beliefs and social structure fall out of that, not the other way around.
+
+**The LLM proposes; SHAPE decides.** Every agent action starts as an LLM suggestion, then gets scored and gated by a personality-driven utility engine built on Schwartz values and HEXACO traits — character is enforced by code, not by prompting the model to stay in character.
+
+Built solo, and checked against something other than vibes: validated against four classic social-psychology studies (Milgram, Asch, Robbers Cave, Stanford Prison Experiment) in the [Replication Portfolio](#replication-portfolio) below.
 
 > Note: This is the public-facing research journal for Civilizism. 
 > Architecture, philosophy, devlogs, and sample outputs live here.
@@ -21,11 +25,11 @@
 
 ## Information Flow
 
-![Civilizism Information Flow](https://github.com/Tim-Chen-Yen-Ting/Civilizism/blob/main/architecture/Civilizism_Info_Flow.png)
+![Civilizism Information Flow](https://raw.githubusercontent.com/Tim-Chen-Yen-Ting/Civilizism/main/architecture/Civilizism_Info_Flow.png)
 
 Memory is the hub of the simulation — not a step in a pipeline. Everything writes into it; everything reads from it. LLMs appear at exactly two points as black boxes: **action proposal generation** and **planning**. Everything else is deterministic.
 
-The LLM proposes; SHAPE decides. Reflection and Planning are LLM-assisted but their outputs are written back into Memory as first-class entries, making them indistinguishable from lived experience in future retrieval.
+Reflection and Planning are LLM-assisted, but their outputs are written back into Memory as first-class entries — indistinguishable from lived experience in future retrieval.
 
 > *"Memory is what makes you, you. Same for agents."*
 
@@ -39,9 +43,11 @@ Civilizism/
 │   ├── Memory/              # Storage, Retrieval, Decay, and Clustering
 │   └── Behavior/            # Perception, Planning, Action, and Reflection
 ├── System/                  # Infrastructure & Environment
-│   ├── Environment/         # Spatial Mapping and Object Logic
+│   ├── Environment/         # Tile-Based Spatial Engine, Object Hierarchy & Interaction
 │   ├── System/              # Global Clock and Activity Logs
 │   └── LLM Hub/             # Backend Wrappers and Structured Parsing
+├── Frontend/                # Scenario Builder + Simulation Viewer (React)
+├── Eval/                    # Replication Portfolio, Diagnosis, and Narrative Review
 └── Tool/                    # Research Utility Engines
     ├── STEME/               # Semantic Transformation Engine → github.com/Tim-Chen-Yen-Ting/STEME
     └── BLOC/                # Belief Clustering Engine      → github.com/Tim-Chen-Yen-Ting/BLOC
@@ -58,9 +64,9 @@ Civilizism/
 
 ### 🛡️ SHAPE — Personality-Driven Utility Maximization
 
-To prevent LLM drift, all action proposals are gated by a deterministic utility scoring engine. The LLM generates 5 candidate actions; SHAPE scores each against the agent's full personality profile via:
+To prevent LLM drift, all action proposals are gated by a utility scoring engine. The LLM generates 5 candidate actions; SHAPE scores each against the agent's full 43-trait personality profile via:
 
-$$U = a(\text{Habit}) + b(\text{Value}) - c(\text{Dissonance})$$
+$$\text{SHAPE} = a(\text{Habit}) + b(\text{Value}) - c(\text{Dissonance})$$
 
 This places a mathematical reign on LLM output, ensuring the agent's character is enforced by code, not prompting.
 
@@ -79,7 +85,7 @@ Perception also respects physical space — speech in an adjacent room propagate
 
 ### 🧩 [BLOC](https://github.com/Tim-Chen-Yen-Ting/BLOC) — Incremental Belief Clustering
 
-Beliefs are not discrete labels — they are evolving centroids in vector space. BLOC groups raw memory embeddings into clusters that drift as new experiences arrive, reflecting how the meaning of a belief changes over time. Opposing centroids are detected automatically and trigger internal conflict memories. Crucially, these centroids are reversible: `inverse_embed()` in `stemeKit.py` maps any centroid back into semantically significant natural language statements, making ideological drift human-readable.
+Beliefs are not discrete labels — they are evolving centroids in vector space. BLOC groups raw memory embeddings into clusters that drift as new experiences arrive, reflecting how the meaning of a belief changes over time. Opposing centroids are detected automatically and trigger internal conflict memories. Each cluster carries the natural-language tag it was seeded from plus a running net importance, so drift is legible as *which* beliefs strengthen, split, or fall away over a run — visible directly in the telemetry and the Belief Evolution view.
 
 ### 🧠 [STEME](https://github.com/Tim-Chen-Yen-Ting/STEME) — Semantic Transformation & Evaluation Mapping Engine
 
@@ -89,7 +95,7 @@ The semantic backbone of the entire framework. Beyond basic similarity scoring, 
 
 Agent character is defined at two levels, both grounded in academic psychology literature.
 
-**Genotypes** — 43 numerical coefficients spanning motivational values and behavioral traits. These coefficients form a reversible map: a personality description in natural language can be encoded into coefficients via STEME, and decoded back into semantically meaningful personality statements via `agent_str()`.
+**Genotypes** — 43 numerical coefficients spanning motivational values and behavioral traits. A personality description in natural language is encoded into coefficients at agent init via STEME, using a bipolar-pair sigmoid stretch against trait anchors; agents given no description start from Gaussian noise instead. In the other direction, `agent_str()` renders the current coefficients back into a prose self-description for prompting as a legible summary.
 
 **Phenotypes** — Secondary traits computed from genotype combinations that directly gate agent behavior. A growing list — new phenotypes are derived as new behavioral features require gating:
 
@@ -97,7 +103,7 @@ Agent character is defined at two levels, both grounded in academic psychology l
 |:---:|:---:|
 | `discipline` | Weight between habit and value alignment in SHAPE scoring |
 | `rememberness` | How strongly recency biases memory retrieval |
-| `forgetness` | Pruning threshold — memories that decay below this are dropped |
+| `forgetness` | Raises the pruning threshold — the higher it is, the sooner a decaying memory is dropped |
 | `associative_strength` | Breadth of semantic leaps allowed during memory retrieval |
 | `emotional_openness` | Sensitivity of emotion vector to incoming memory intensity |
 | `conceptual_inertia` | Resistance to forming new belief clusters |
@@ -106,7 +112,7 @@ Agent character is defined at two levels, both grounded in academic psychology l
 
 ### ⏳ Organic Memory & Planning
 
-**Double-Exponential Decay** — Memories fade along two independent decay curves: passive decay proportional to age, and an active importance-weighted recall bump whenever a memory is retrieved. Memories that fall below the agent's `forgetness` threshold are permanently pruned, mirroring human long-term forgetting.
+**Double-Exponential Decay** — Memory strength is the product of two independent exponential decays: one on time since last recall, stretched by the memory's own importance, and one on raw age, which importance cannot slow. Recall resets the first clock but never the second, so a memory can be kept alive by rehearsal and still fade with age. Memories falling below an erase threshold — itself raised by the agent's `forgetness` — are permanently pruned, and embeddings are quantized progressively coarser as a memory ages through tiers, so old memories survive as gist before they vanish.
 
 **Three-Tier Planning** — Planning operates at three levels of resolution:
 - **Long-term goals** — open-ended objectives generated from reflection, stored as memories and weighted in retrieval
@@ -117,7 +123,7 @@ Agent character is defined at two levels, both grounded in academic psychology l
 
 ### 📐 Emotion & Belief as Continuous Fields
 
-**Emotion** is not a discrete label. It is maintained as a continuous vector in embedding space, nudged by every memory proportional to emotional intensity and `emotional_openness`. The current emotion state is resolved on demand by nearest-neighbor lookup against 96 fine-grained emotion labels across 9 families (joy, sadness, anger, fear, disgust, surprise, anticipation, trust, compound). These continuous arrays track shifting multi-categorical distributions across Plutchik clusters, fully exposed in telemetry and visualized via real-time multi-axis SVG radar charts. // [edited here]
+**Emotion** is not a discrete label. Each memory is tagged against a hierarchy of 91 fine-grained emotion labels organized into 9 families (joy, sadness, anger, fear, disgust, surprise, anticipation, trust, and a compound tier), and those tags are projected onto an 8-dimensional Plutchik vector that every new memory nudges in proportion to its emotional intensity and the agent's `emotional_openness`. The agent's current mood is the argmax over that vector, and the full normalized distribution — not just the winner — is carried in telemetry and drawn as a real-time multi-axis SVG radar chart. Compound labels enrich the projection but are not themselves a resolvable state.
 
 **Belief** follows the same principle. Each memory's content is projected into embedding space and incrementally clustered via BLOC. The resulting centroid captures not just a label but what a belief *means* to this specific agent given their accumulated experience — and how it drifts over time.
 
@@ -128,11 +134,23 @@ Simulations are defined entirely by a scenario file — no scenario-specific log
 Two mechanics fall out of this that are worth calling out:
 
 - **Identity view** — a faction can be configured to perceive another faction under a collective identity rather than as individuals (e.g. prisoners perceiving every guard simply as "Guard," never by name). This is applied purely at the perceptual layer — the underlying event log stays accurate — so de-individuation becomes something the *agent* experiences, not something the simulation fakes.
-- **World schedule & coercive actions** — a scenario can inject institutional rhythms (meal times, roll calls, lights-out) as importance-weighted pressure that nudges agents without hard-locking their autonomy, and grant certain factions coercive authority to physically direct other agents' movement. This enables role-asymmetric scenarios — guard/prisoner, employer/employee, any power-imbalanced social structure — without writing new engine code per scenario.
+- **World schedule** — a scenario can inject institutional rhythms (meal times, roll calls, lights-out) as importance-weighted pressure that nudges agents without hard-locking their autonomy.
+- **Coercive authority** — a faction can be granted the power to physically direct other agents, declared in the scenario as the factions it may target and the action verbs that constitute relocation:
+
+  ```json
+  "guard": {
+    "coercion": {
+      "can_target": ["prisoner"],
+      "relocate_verbs": ["escort", "march", "return", "transfer"]
+    }
+  }
+  ```
+
+  The gate is structural, not prompt-conveyed. A faction with no `coercion` block cannot coerce at all, an attempt against a faction outside `can_target` is refused and logged as such, and relocation fires only on the declared verbs — so the engine contains no scenario vocabulary of its own. This enables role-asymmetric scenarios — guard/prisoner, employer/employee, any power-imbalanced social structure — without writing new engine code per scenario. Refused attempts are kept rather than discarded: an agent reaching for authority it does not have is itself a finding.
 
 ### 🍽️ Biological Drives
 
-Hunger and boredom run every tick as first-class inputs to the decision engine, not cosmetic stats. Hunger accumulates over simulated hours and resets on food-related actions; boredom follows a bathtub curve shaped by how well the current activity aligns with the agent's personality. Both feed into `survival_pressure` and `irritability`, which erode the agent's discipline and bias action selection — a hungry, bored agent behaves measurably differently from a well-fed, engaged one, with no scripting involved.
+Hunger and boredom run every tick as first-class inputs to the decision engine, not cosmetic stats. Hunger accumulates over simulated hours and resets on food-related actions; boredom follows a bathtub curve shaped by how well the current activity aligns with the agent's personality. They reach behavior by different routes: hunger joins fatigue in **`survival_pressure`** (the physical bucket, normalized by per-agent tolerances), while boredom joins fatigue in **`irritability`**, damped by the agent's gentleness and patience. Both then erode `discipline`, which is the weight SHAPE places on values over habits — and a lower discipline also widens the noise term, so a hungry, bored agent is both less principled and less predictable. No scripting involved.
 
 ### 🔩 Infrastructure
 
@@ -144,7 +162,7 @@ Hunger and boredom run every tick as first-class inputs to the decision engine, 
 
 - **Built entirely on first-principles implementations** — the cognitive architecture is novel enough that existing high-level frameworks offered no meaningful abstraction. The entire codebase relies only on: `numpy`, `math`, `uuid`, `typing`, `pydantic`, `instructor`, `litellm`, `json`, `sentence_transformers`, `sklearn.metrics.pairwise`, and `itertools`.
 
-- **Comprehensive Telemetry & Visualization** — Historical trace execution logs natively dump environment logs, chronological memory hierarchies (`embedding_tier`), and directional relational topologies (Graphviz/DOT networks mapping dynamic trust and edge-specific dominant emotions) directly into a lightweight streamable pipeline. // [edited here]
+- **Comprehensive Telemetry & Visualization** — Historical trace execution logs natively dump environment logs, chronological memory hierarchies (`embedding_tier`), and directional relational topologies (Graphviz/DOT networks mapping dynamic trust and edge-specific dominant emotions) directly into a lightweight streamable pipeline.
 
 > *"AI is a powerful wildhorse, but it's only a good ride if you put a mathematical reign on it."*
 
@@ -174,33 +192,63 @@ streamlit run streamlit_app.py
 ### 🗄️ Telemetry JSON Schema (`simulation_output.json`)
 Large-scale historical execution logs are serialized into an analytical JSON array mapping environment records, dynamic agent profiles, chronological memory banks, and relational states:
 
+The artifact is versioned, and every writer and reader goes through a single schema module — a reader asking for a key the writer never wrote gets an error, not a plausible default.
+
 ```json
 {
-  "total_ticks": 189,
+  "schema_version": 2,
+  "scenario_name": "SPE",
+  "first_tick": 13,
+  "last_tick": 301,
+  "tick_count": 288,
+  "factions": { "Harris": "guard", "8612": "prisoner" },
+
   "activity_log": [
-    { "timestep": 45, "by_who": "Ray", "content": "...", "type": "speech", "target": "environment", "region": "bedroom 3" }
+    { "timestep": 45, "by_who": "Ray", "content": "...", "type": "speech",
+      "target": "environment", "region": "bedroom 3", "importance": 6.4 }
   ],
   "room_logs": {
-    "kitchen": [ { "tick": 46, "event": "..." } ]
+    "kitchen": [ { "timestep": 46, "by_who": "Ray", "content": "...", "type": "action",
+                   "target": "NA", "region": "kitchen", "importance": 3.1 } ]
   },
+
+  "resume": {
+    "tick": 301, "end_tick": 301, "density": 30, "start_tick": 13,
+    "activity_log_tail": [],
+    "agents": { "Ray": { "...": "full agent state for restart" } }
+  },
+
   "agents": {
     "Ray": {
       "final_memory_log": [
-        { "timestep": 188, "content": "...", "importance": 8.32, "type": "observation", "emotion": "gratitude", "belief": "responsibility", "embedding_tier": 1, "recency_score": 1 }
+        { "timestep": 188, "content": "...", "importance": 8.32, "type": "observation",
+          "emotion": "gratitude", "belief": "responsibility", "embedding_tier": 1, "recency_score": 1 }
       ],
       "snapshot_log": [
         {
-          "tick": 0,
-          "emotion": { "emotion": "gratitude", "intensity": 10.0 },
-          "emotion_distribution": { "joy": 0.4, "trust": 0.3, "gratitude": 0.3 },
+          "tick": 13,
+          "location": "cell 1",
+          "emotion": { "emotion": "trust", "intensity": 4.2 },
+          "emotion_distribution": { "joy": 0.21, "trust": 0.34, "fear": 0.12, "anger": 0.08,
+                                    "sadness": 0.09, "disgust": 0.05, "surprise": 0.04, "anticipation": 0.07 },
           "situation": ["Observing the environment"],
+          "memory_count": 24,
+          "belief_clusters": [ { "name": "responsibility", "net_importance": 650.0 } ],
+          "recent_intents": ["chat", "rest"],
+          "biological": { "process_s": 0.31, "irritability": 0.12, "fatigue_delta": 0.08,
+                          "hunger": 0.22, "boredom": 0.5, "sleeping": false },
+          "plan_queue": [],
+          "last_decision": { "action": "...", "intent": "chat", "room": "cell 1",
+                             "scores": { "shape_action": 0.61, "shape_intent": 0.58,
+                                         "plan": 0.33, "noise": 0.5 } },
           "agent_info": {
             "summary": "An agent profile summary...",
             "core_memories": [],
             "top_goals": [],
             "top_beliefs": [ { "name": "responsibility", "net_importance": 650.0 } ],
-            "phenotypes": { "discipline": 0.8 },
-            "personality_coefficients": { "openness": 0.85 },
+            "phenotypes": { "discipline": 0.8, "rememberness": 0.6, "forgetness": 0.3 },
+            "psyc_profile": { "power_dominance": 0.85, "sincerity": 0.41 },
+            "agent_concepts": { "belief": [], "emotion": [], "social": [] },
             "social_circle": {
               "Maya": { "trust_score": 0.5, "dominant_emotion": { "joy": 1.0 }, "recent_activities": [] }
             }
@@ -211,6 +259,23 @@ Large-scale historical execution logs are serialized into an analytical JSON arr
   }
 }
 ```
+
+`first_tick`/`last_tick` bound the ticks the artifact actually covers and `tick_count` is their difference — a resumed run starts partway along the number line, so these are three distinct values rather than one. Diagnosis output is written to a `run_<id>_diagnosis.json` sidecar, keeping the run artifact write-once.
+
+---
+
+## Replication Portfolio
+
+Simulating believable agents is a claim that needs checking against something other than vibes. The portfolio pairs each scenario against a classic social-psychology study and scores runs against what that study actually found — the closest thing this project has to ground truth.
+
+| Case | Study |
+|---|---|
+| Milgram Obedience | Milgram, 1963 |
+| Asch Conformity | Asch, 1951/56 |
+| Robbers Cave | Sherif, 1954/61 |
+| Stanford Prison Experiment | Zimbardo, 1971 |
+
+Each case publishes the study summary, the predictions it's measured against (with historical values and citations), and a generated findings report — never the raw simulation trace, which stays in the private repo.
 
 ---
 
