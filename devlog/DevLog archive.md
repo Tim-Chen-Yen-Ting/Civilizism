@@ -1,4 +1,4 @@
-# Historical Milestone Archive (Phase 0–2)
+# Historical Milestone Archive (Phase 0–3)
 
 This archive contains the completion logs and terminal captures from the early proof-of-concept stages of Civilizism.
 
@@ -23,4 +23,11 @@ Focus: 2-agent sustained dialogue and context-aware interaction.
 - Engine moved from hardcoded scenario content to a scenario-JSON-driven architecture — the precondition for every replication scenario since.
 - STEME/BLOC began their move from cosine similarity to NLI.
 
-Current development has moved into Phase 3, focusing on grounded biological/psychological mechanics (sleep, threat response, object interaction, relationship modeling) and a real frontend for watching runs.
+## 🏗️ Phase 3: From Placeholder Mechanics to a World You Can Watch
+
+- Focus: grounding the mechanics Phase 2 left as placeholders, and making runs watchable.
+- Sleep and threat response rebuilt: sleep competes with everything else an agent is doing, and threat wears off with repeated exposure.
+- Stateful objects, a tile-based spatial engine, and a relationship classifier that can answer "none of the above."
+- Replication portfolio (Milgram, Asch, Robbers Cave, SPE) and a React frontend with a scenario builder, replay viewer, and live Deploy & Run.
+
+Current development is open on generational transition, belief heatmaps and a key-event timeline, and steering a live run.

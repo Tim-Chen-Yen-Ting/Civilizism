@@ -170,24 +170,17 @@ Hunger and boredom run every tick as first-class inputs to the decision engine, 
 
 ## 📊 Running the Demo Viewer
 
-To visualize the microscopic states and emergent macroscopic properties of a simulation run, we provide an interactive Streamlit dashboard. 
-
-### Prerequisites
-
-```bash
-pip install streamlit pandas
-```
+To visualize the microscopic states and emergent macroscopic properties of a simulation run, we provide an interactive web viewer built in React (`frontend/`) — a pannable/zoomable map replay, tick scrubber, and per-agent panel with social graph and trend charts.
 
 **Usage**
 
-1. Place a populated simulation trace dataset inside the demo/ folder as simulation_output.json.
-
-2. Launch the viewer:
-
 ```bash
-cd demo
-streamlit run streamlit_app.py
+cd frontend
+npm install   # first time only
+npm run dev
 ```
+
+Then open `/viewer` and load a `run_*.json` from `simulation_runs/` (or, if you just ran a simulation via `main.py`, the dev server launches and opens straight to that run automatically).
 
 ### 🗄️ Telemetry JSON Schema (`simulation_output.json`)
 Large-scale historical execution logs are serialized into an analytical JSON array mapping environment records, dynamic agent profiles, chronological memory banks, and relational states:
