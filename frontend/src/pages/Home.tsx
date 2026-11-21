@@ -20,6 +20,10 @@ export function Home() {
           <p className={styles.choiceDesc}>Four housemates over a day and a half — movement, speech, moods and relationships as they unfold.</p>
         </PanelButton>
       </div>
+
+      <p className={styles.byline}>
+        Built by <a href="https://tim-chen-yen-ting.github.io/" target="_blank" rel="noopener noreferrer">Yen-Ting (Tim) Chen</a>
+      </p>
     </PageShell>
   );
 }
