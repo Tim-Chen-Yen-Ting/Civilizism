@@ -220,3 +220,7 @@ Building at the intersection of cognitive science, systems architecture, and AI.
 ## License
 
 MIT — free to explore, cite, or contribute with proper credit.
+
+---
+
+Built by [Yen-Ting (Tim) Chen](https://tim-chen-yen-ting.github.io/) · [Portfolio](https://tim-chen-yen-ting.github.io/)
