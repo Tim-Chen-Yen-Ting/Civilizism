@@ -213,7 +213,7 @@ Developed solo by **Tim Chen** — Statistics & Data Science, UCLA '27.
 
 Building at the intersection of cognitive science, systems architecture, and AI.
 
-[LinkedIn](https://www.linkedin.com/in/yen-ting-tim-chen-303276329?utm_source=share&utm_campaign=share_via&utm_content=profile&utm_medium=ios_app) | [GitHub](https://github.com/Tim-Chen-Yen-Ting) 
+[LinkedIn](https://www.linkedin.com/in/tim-chen-yen-ting) | [GitHub](https://github.com/Tim-Chen-Yen-Ting) 
 
 ---
 
