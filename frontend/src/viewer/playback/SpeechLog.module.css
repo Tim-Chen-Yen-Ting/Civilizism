@@ -1,0 +1,74 @@
+.log {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-1);
+  /* Fixed budget rather than height:100% — this sits in a content-sized
+     footer alongside PlaybackBar, not a flex child with an explicit height
+     to inherit from. */
+  max-height: 200px;
+  min-height: 96px;
+  overflow-y: auto;
+  padding: var(--space-3) var(--space-4);
+  background: var(--color-bg);
+}
+
+.empty {
+  color: var(--color-text-faint);
+  font-size: var(--text-sm);
+  margin: auto;
+}
+
+.line {
+  display: flex;
+  align-items: baseline;
+  gap: var(--space-2);
+  padding: var(--space-1) var(--space-2);
+  border-left: 3px solid transparent;
+  border-radius: var(--radius-sm);
+  cursor: pointer;
+  transition: background-color var(--transition-fast);
+}
+
+.line:hover {
+  background: var(--color-surface-hover);
+}
+
+.latest {
+  background: var(--color-surface);
+}
+
+.time {
+  flex-shrink: 0;
+  font-family: var(--font-mono);
+  font-size: var(--text-xs);
+  color: var(--color-text-faint);
+}
+
+.speaker {
+  flex-shrink: 0;
+  border: none;
+  background: transparent;
+  padding: 0;
+  color: var(--color-accent);
+  font-size: var(--text-sm);
+  font-weight: 600;
+  cursor: pointer;
+}
+
+.speaker:hover {
+  color: var(--color-accent-hover);
+  text-decoration: underline;
+}
+
+.content {
+  color: var(--color-text);
+  font-size: var(--text-sm);
+  word-break: break-word;
+}
+
+.target {
+  flex-shrink: 0;
+  margin-left: auto;
+  color: var(--color-text-muted);
+  font-size: var(--text-xs);
+}

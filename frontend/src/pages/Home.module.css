@@ -1,0 +1,35 @@
+.intro {
+  margin-bottom: var(--space-6);
+}
+
+.title {
+  font-size: var(--text-2xl);
+  margin-bottom: var(--space-2);
+}
+
+.subtitle {
+  color: var(--color-text-muted);
+  font-size: var(--text-base);
+}
+
+.choices {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+  gap: var(--space-5);
+}
+
+.choiceIcon {
+  font-size: var(--text-2xl);
+  margin-bottom: var(--space-3);
+}
+
+.choiceTitle {
+  font-size: var(--text-lg);
+  margin-bottom: var(--space-2);
+}
+
+.choiceDesc {
+  color: var(--color-text-muted);
+  font-size: var(--text-sm);
+  line-height: 1.5;
+}

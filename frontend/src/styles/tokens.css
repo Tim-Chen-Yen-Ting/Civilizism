@@ -1,0 +1,77 @@
+/* Design tokens — shared across the whole app.
+   Dark control-panel palette: this is an observability tool for agent
+   simulations, not a marketing site, so it defaults to a dark, low-glare
+   surface. Light-mode tokens are NOT provided — the app commits to the dark
+   look regardless of OS theme, so color-scheme is pinned rather than left
+   to prefers-color-scheme. */
+
+:root {
+  color-scheme: dark;
+
+  /* --- color --- */
+  --color-bg: #0b0e14;
+  --color-bg-elevated: #10141d;
+  --color-surface: #171c28;
+  --color-surface-hover: #1d2330;
+  --color-border: #262d3d;
+  --color-border-strong: #333c50;
+
+  --color-text: #e6e9f0;
+  --color-text-muted: #8b93a7;
+  --color-text-faint: #5b6478;
+
+  --color-accent: #5b8cff;
+  --color-accent-hover: #7aa0ff;
+  --color-accent-text: #081020;
+
+  --color-success: #35c98f;
+  --color-danger: #ff6b6b;
+  --color-warning: #f5b942;
+
+  /* --- chart categorical palette (dataviz skill, validated against the dark
+     surfaces above via scripts/validate_palette.js — worst adjacent CVD
+     delta-E 8.4, worst adjacent normal-vision delta-E 19.3, all 8 >= 3:1
+     contrast). Fixed hue-per-slot order — never cycle past 8, fold the tail
+     into --chart-other instead. */
+  --chart-cat-1: #3987e5;
+  --chart-cat-2: #d95926;
+  --chart-cat-3: #199e70;
+  --chart-cat-4: #c98500;
+  --chart-cat-5: #d55181;
+  --chart-cat-6: #008300;
+  --chart-cat-7: #9085e9;
+  --chart-cat-8: #e66767;
+  --chart-other: #5b6478;
+
+  /* --- spacing scale --- */
+  --space-1: 4px;
+  --space-2: 8px;
+  --space-3: 12px;
+  --space-4: 16px;
+  --space-5: 24px;
+  --space-6: 32px;
+  --space-7: 40px;
+  --space-8: 48px;
+
+  /* --- radius --- */
+  --radius-sm: 6px;
+  --radius-md: 10px;
+  --radius-lg: 16px;
+
+  /* --- typography --- */
+  --font-sans: 'Segoe UI', system-ui, -apple-system, Roboto, sans-serif;
+  --font-mono: ui-monospace, 'Cascadia Code', Consolas, monospace;
+
+  --text-xs: 0.75rem;
+  --text-sm: 0.875rem;
+  --text-base: 1rem;
+  --text-lg: 1.25rem;
+  --text-xl: 1.5rem;
+  --text-2xl: 2rem;
+
+  /* --- motion --- */
+  --transition-fast: 120ms ease;
+
+  /* --- elevation --- */
+  --shadow-md: 0 8px 24px rgba(0, 0, 0, 0.35);
+}

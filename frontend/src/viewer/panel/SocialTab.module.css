@@ -1,0 +1,164 @@
+/* The detail card overlays the graph (position: absolute) rather than
+   sitting beside it in a flex row — the panel is only ~380px wide (see
+   AgentPanel.module.css's `width: min(420px, 100%)` minus padding), nowhere
+   near enough to fit a force graph AND a 240px card side by side without
+   squeezing the graph's own canvas down to a sliver, which scrolled every
+   node but the leftmost out of reach once a card was open. Overlaying keeps
+   the graph at its full container width regardless of card state. */
+.wrap {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  min-height: 0;
+}
+
+.graphArea {
+  width: 100%;
+  height: 100%;
+  min-height: 320px;
+}
+
+.detailCard {
+  position: absolute;
+  right: var(--space-3);
+  bottom: var(--space-3);
+  z-index: 2;
+  width: 240px;
+  max-width: calc(100% - var(--space-6));
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-3);
+  background: var(--color-surface);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-md);
+  padding: var(--space-4);
+  max-height: min(360px, calc(100% - var(--space-6)));
+  overflow-y: auto;
+  box-shadow: var(--shadow-md);
+}
+
+.detailHeader {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--space-2);
+}
+
+.detailName {
+  margin: 0;
+  font-size: var(--text-base);
+  color: var(--color-text);
+}
+
+.closeBtn {
+  background: none;
+  border: none;
+  color: var(--color-text-muted);
+  font-size: var(--text-lg);
+  line-height: 1;
+  cursor: pointer;
+  padding: 0 var(--space-1);
+}
+
+.closeBtn:hover {
+  color: var(--color-text);
+}
+
+.statList {
+  margin: 0;
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-1);
+}
+
+.statRow {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  font-size: var(--text-sm);
+}
+
+.statRow dt {
+  color: var(--color-text-muted);
+}
+
+.statRow dd {
+  margin: 0;
+  color: var(--color-text);
+  font-family: var(--font-mono);
+}
+
+.unclear {
+  color: var(--color-text-faint);
+  font-style: italic;
+  font-family: var(--font-sans) !important;
+}
+
+.sectionTitle {
+  margin: 0 0 var(--space-2);
+  font-size: var(--text-xs);
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+  color: var(--color-text-muted);
+}
+
+.tagSection {
+  border-top: 1px solid var(--color-border);
+  padding-top: var(--space-3);
+}
+
+.tagList {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-2);
+}
+
+.tagRow {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+.tagLabel {
+  font-size: var(--text-xs);
+  color: var(--color-text);
+}
+
+.tagBarTrack {
+  display: block;
+  height: 4px;
+  border-radius: var(--radius-sm);
+  background: var(--color-border);
+  overflow: hidden;
+}
+
+.tagBarFill {
+  display: block;
+  height: 100%;
+  background: var(--color-accent);
+  border-radius: var(--radius-sm);
+}
+
+.activitySection {
+  border-top: 1px solid var(--color-border);
+  padding-top: var(--space-3);
+}
+
+.activityList {
+  margin: 0;
+  padding-left: var(--space-4);
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-2);
+  font-size: var(--text-xs);
+  color: var(--color-text-muted);
+}
+
+.empty {
+  margin: 0;
+  font-size: var(--text-xs);
+  color: var(--color-text-faint);
+}

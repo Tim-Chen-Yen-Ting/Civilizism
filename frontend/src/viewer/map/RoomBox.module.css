@@ -1,0 +1,29 @@
+.room {
+  position: absolute;
+  /* Sharp corners, not var(--radius-md) — two flush-adjacent rooms (sharing
+     an exact edge, the common case for an authored floor plan) each rounding
+     their own corner leaves a small lens-shaped gap of background showing
+     through right where the corners meet, even with no door anywhere near
+     it. A tile-based floor plan reads fine with square corners anyway. */
+  /* Wall color — deliberately distinct from both the room fill (per-room,
+     inline, see roomColors.ts) and the map's own background, so a wall
+     reads as its own material rather than just "a border". */
+  border: 3px solid #2e2a25;
+  box-sizing: border-box;
+}
+
+.label {
+  position: absolute;
+  top: var(--space-2);
+  left: var(--space-3);
+  padding: 1px 5px;
+  border-radius: var(--radius-sm);
+  background: rgba(11, 14, 20, 0.55);
+  font-size: var(--text-xs);
+  font-weight: 600;
+  letter-spacing: 0.02em;
+  color: #f2f0ea;
+  text-transform: uppercase;
+  pointer-events: none;
+  user-select: none;
+}

@@ -1,0 +1,46 @@
+.dot {
+  position: absolute;
+  border-radius: 3px;
+  border: 2px solid var(--color-bg);
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.35);
+  pointer-events: none;
+}
+
+.dot.locked {
+  background: var(--color-danger);
+}
+
+.dot.unlocked {
+  background: var(--color-success);
+}
+
+/* Locked: the wall segment is genuinely overwritten by this — solid,
+   unrotated, reads as a barrier (the only state that actually blocks
+   passage — see DoorToken.tsx's own doc comment). */
+.wallPatch {
+  position: absolute;
+  border-radius: 2px;
+  background: var(--color-danger);
+  pointer-events: none;
+  box-sizing: border-box;
+}
+
+/* Painted in the map's own background color, directly over the wall
+   segment the door sits on — RoomBox's border has no way to carve a literal
+   gap into one edge via CSS alone, so this erases it visually instead. */
+.gapPatch {
+  position: absolute;
+  background: var(--color-bg);
+  pointer-events: none;
+  box-sizing: border-box;
+}
+
+/* The physical door leaf, pivoted open on top of the gap above. */
+.leaf {
+  position: absolute;
+  border-radius: 2px;
+  background: #8a6a45;
+  pointer-events: none;
+  box-sizing: border-box;
+  transition: transform 0.2s ease;
+}
