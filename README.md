@@ -46,7 +46,7 @@ Civilizism/
 │   ├── Environment/         # Tile-Based Spatial Engine, Object Hierarchy & Interaction
 │   ├── System/              # Global Clock and Activity Logs
 │   └── LLM Hub/             # Backend Wrappers and Structured Parsing
-├── Frontend/                # Scenario Builder + Simulation Viewer (React)
+├── Frontend/                # Replay Viewer (React)
 ├── Eval/                    # Replication Portfolio, Diagnosis, and Narrative Review
 └── Tool/                    # Research Utility Engines
     ├── STEME/               # Semantic Transformation Engine → github.com/Tim-Chen-Yen-Ting/STEME
@@ -162,17 +162,15 @@ Hunger and boredom run every tick as first-class inputs to the decision engine, 
 
 - **Built entirely on first-principles implementations** — the cognitive architecture is novel enough that existing high-level frameworks offered no meaningful abstraction. The entire codebase relies only on: `numpy`, `math`, `uuid`, `typing`, `pydantic`, `instructor`, `litellm`, `json`, `sentence_transformers`, `sklearn.metrics.pairwise`, and `itertools`.
 
-- **Comprehensive Telemetry & Visualization** — Historical trace execution logs natively dump environment logs, chronological memory hierarchies (`embedding_tier`), and directional relational topologies (Graphviz/DOT networks mapping dynamic trust and edge-specific dominant emotions) directly into a lightweight streamable pipeline.
+- **Comprehensive Telemetry & Visualization** — Historical trace execution logs natively dump environment logs, chronological memory logs, and directional relational topologies (Graphviz/DOT networks mapping dynamic trust and edge-specific dominant emotions) directly into a lightweight streamable pipeline.
 
 > *"AI is a powerful wildhorse, but it's only a good ride if you put a mathematical reign on it."*
 
 ---
 
-## 📊 Running the Demo Viewer
+## 📊 Watch a Replay
 
-To visualize the microscopic states and emergent macroscopic properties of a simulation run, we provide an interactive web viewer built in React (`frontend/`) — a pannable/zoomable map replay, tick scrubber, and per-agent panel with social graph and trend charts.
-
-**Usage**
+The `frontend/` folder is an interactive web viewer (React) that plays back a recorded run — a pannable, zoomable map, a tick scrubber, a per-agent panel with moods, plans, relationships and trend charts, and the conversation as it happens. It ships with one recorded run: four housemates sharing a house over a day and a half.
 
 ```bash
 cd frontend
@@ -180,80 +178,7 @@ npm install   # first time only
 npm run dev
 ```
 
-Then open `/viewer` and load a `run_*.json` from `simulation_runs/` (or, if you just ran a simulation via `main.py`, the dev server launches and opens straight to that run automatically).
-
-### 🗄️ Telemetry JSON Schema (`simulation_output.json`)
-Large-scale historical execution logs are serialized into an analytical JSON array mapping environment records, dynamic agent profiles, chronological memory banks, and relational states:
-
-The artifact is versioned, and every writer and reader goes through a single schema module — a reader asking for a key the writer never wrote gets an error, not a plausible default.
-
-```json
-{
-  "schema_version": 2,
-  "scenario_name": "SPE",
-  "first_tick": 13,
-  "last_tick": 301,
-  "tick_count": 288,
-  "factions": { "Harris": "guard", "8612": "prisoner" },
-
-  "activity_log": [
-    { "timestep": 45, "by_who": "Ray", "content": "...", "type": "speech",
-      "target": "environment", "region": "bedroom 3", "importance": 6.4 }
-  ],
-  "room_logs": {
-    "kitchen": [ { "timestep": 46, "by_who": "Ray", "content": "...", "type": "action",
-                   "target": "NA", "region": "kitchen", "importance": 3.1 } ]
-  },
-
-  "resume": {
-    "tick": 301, "end_tick": 301, "density": 30, "start_tick": 13,
-    "activity_log_tail": [],
-    "agents": { "Ray": { "...": "full agent state for restart" } }
-  },
-
-  "agents": {
-    "Ray": {
-      "final_memory_log": [
-        { "timestep": 188, "content": "...", "importance": 8.32, "type": "observation",
-          "emotion": "gratitude", "belief": "responsibility", "embedding_tier": 1, "recency_score": 1 }
-      ],
-      "snapshot_log": [
-        {
-          "tick": 13,
-          "location": "cell 1",
-          "emotion": { "emotion": "trust", "intensity": 4.2 },
-          "emotion_distribution": { "joy": 0.21, "trust": 0.34, "fear": 0.12, "anger": 0.08,
-                                    "sadness": 0.09, "disgust": 0.05, "surprise": 0.04, "anticipation": 0.07 },
-          "situation": ["Observing the environment"],
-          "memory_count": 24,
-          "belief_clusters": [ { "name": "responsibility", "net_importance": 650.0 } ],
-          "recent_intents": ["chat", "rest"],
-          "biological": { "process_s": 0.31, "irritability": 0.12, "fatigue_delta": 0.08,
-                          "hunger": 0.22, "boredom": 0.5, "sleeping": false },
-          "plan_queue": [],
-          "last_decision": { "action": "...", "intent": "chat", "room": "cell 1",
-                             "scores": { "shape_action": 0.61, "shape_intent": 0.58,
-                                         "plan": 0.33, "noise": 0.5 } },
-          "agent_info": {
-            "summary": "An agent profile summary...",
-            "core_memories": [],
-            "top_goals": [],
-            "top_beliefs": [ { "name": "responsibility", "net_importance": 650.0 } ],
-            "phenotypes": { "discipline": 0.8, "rememberness": 0.6, "forgetness": 0.3 },
-            "psyc_profile": { "power_dominance": 0.85, "sincerity": 0.41 },
-            "agent_concepts": { "belief": [], "emotion": [], "social": [] },
-            "social_circle": {
-              "Maya": { "trust_score": 0.5, "dominant_emotion": { "joy": 1.0 }, "recent_activities": [] }
-            }
-          }
-        }
-      ]
-    }
-  }
-}
-```
-
-`first_tick`/`last_tick` bound the ticks the artifact actually covers and `tick_count` is their difference — a resumed run starts partway along the number line, so these are three distinct values rather than one. Diagnosis output is written to a `run_<id>_diagnosis.json` sidecar, keeping the run artifact write-once.
+Then open `/viewer`. The replay loads on its own; you can also load another run JSON from your machine.
 
 ---
 
